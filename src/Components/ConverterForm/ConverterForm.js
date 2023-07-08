@@ -12,6 +12,11 @@ function ConverterForm() {
   const [amount, setAmount] = useState("");
   const [result, setResult] = useState("");
 
+  useEffect(() => {
+    fetchCurrencyData();
+    // eslint-disable-next-line
+  }, []);
+
   const fetchCurrencyData = () => {
     fetch(`${apiUrl}${selectedCurrency}/`)
       .then((response) => response.json())
@@ -26,15 +31,13 @@ function ConverterForm() {
       .catch((error) => alert(error));
   };
 
-  useEffect(() => {
-    fetchCurrencyData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCurrency]);
-
   const calculate = (currencyValue) => {
     const parsedAmount = parseFloat(amount);
     if (isNaN(parsedAmount) || parsedAmount <= 0) {
+      setResult("");
+      setAmount(" ");
       alert("Enter a value greater than 0");
+
       return;
     }
     const calculatedValue = parsedAmount * currencyValue;
