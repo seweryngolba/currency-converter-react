@@ -1,25 +1,66 @@
-import React from "react";
-import "./ConverterForm.css";
+import React, { useState, useEffect } from "react";
+import ConvertButton from "../ConvertButton/ConvertButton";
 import CurrencyInput from "../CurrencyInput/CurrencyInput";
 import CurrencySelect from "../CurrencySelect/CurrencySelect";
-import ConvertButton from "../ConvertButton/ConvertButton";
 import ResultOutput from "../ResultOutput/ResultOutput";
+import "./ConverterForm.css";
+
+const apiUrl = "https://api.nbp.pl/api/exchangerates/rates/a/";
 
 function ConverterForm() {
+  const [selectedCurrency, setSelectedCurrency] = useState("EUR");
+  const [amount, setAmount] = useState("");
+  const [result, setResult] = useState("");
+
+  const fetchCurrencyData = () => {
+    fetch(`${apiUrl}${selectedCurrency}/`)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data?.rates?.length > 0 && data.rates[0].mid) {
+          const currencyValue = data.rates[0].mid;
+          calculate(currencyValue);
+        } else {
+          alert("Failed to read currency converter");
+        }
+      })
+      .catch((error) => alert(error));
+  };
+
+  useEffect(() => {
+    fetchCurrencyData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedCurrency]);
+
+  const calculate = (currencyValue) => {
+    const parsedAmount = parseFloat(amount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+      alert("Enter a value greater than 0");
+      return;
+    }
+    const calculatedValue = parsedAmount * currencyValue;
+    setResult(calculatedValue.toFixed(2) + " PLN");
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    fetchCurrencyData();
+  };
+
   return (
-    <form className="converter-form">
+    <form className="converter" onSubmit={handleSubmit}>
       <div className="app-name">
         <h1 className="title">Currency Converter</h1>
         <i className="fa-solid fa-money-bill-transfer app-logo"></i>
       </div>
       <div className="amount-value">
-        <CurrencyInput />
-        <CurrencySelect />
+        <CurrencyInput value={amount} onChange={setAmount} />
+        <CurrencySelect
+          value={selectedCurrency}
+          onChange={setSelectedCurrency}
+        />
         <ConvertButton />
         <div className="equal-sign">=</div>
-        <div className="total-amount">
-          <ResultOutput />
-        </div>
+        <ResultOutput result={result} />
       </div>
     </form>
   );

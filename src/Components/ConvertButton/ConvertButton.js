@@ -2,12 +2,8 @@ import React from "react";
 import "./ConvertButton.css";
 
 function ConvertButton() {
-  const handleConvert = (event) => {
-    event.preventDefault();
-  };
-
   return (
-    <button className="convert-button" type="submit" onClick={handleConvert}>
+    <button id="btn" className="convert-button" type="submit">
       CONVERT
     </button>
   );
