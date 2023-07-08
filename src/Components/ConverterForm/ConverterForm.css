@@ -1,0 +1,35 @@
+.converter-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 10px;
+  width: 600px;
+  height: 200px;
+  background: var(--primaryColor);
+  border: 2px solid var(--secondaryColor);
+  border-radius: 50px;
+  box-shadow: 2px 8px 40px var(--secondaryColor);
+}
+
+.app-name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+}
+
+.title {
+  font-size: 24px;
+}
+
+.app-logo {
+  font-size: 24px;
+}
+
+.amount-value {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}

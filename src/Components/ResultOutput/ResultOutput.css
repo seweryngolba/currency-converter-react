@@ -1,0 +1,18 @@
+.total-amount {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 180px;
+  height: 50px;
+  margin-left: -20px;
+}
+
+.equal-sign {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.counted {
+  font-weight: bold;
+  font-size: 20px;
+}
