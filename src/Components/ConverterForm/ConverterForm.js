@@ -33,19 +33,27 @@ function ConverterForm() {
 
   const calculate = (currencyValue) => {
     const parsedAmount = parseFloat(amount);
-    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+    if (isNaN(parsedAmount)) {
       setResult("");
-      setAmount(" ");
-      alert("Enter a value greater than 0");
-
       return;
     }
     const calculatedValue = parsedAmount * currencyValue;
+    if (parsedAmount <= 0) {
+      setResult("");
+      return;
+    }
     setResult(calculatedValue.toFixed(2) + " PLN");
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const parsedAmount = parseFloat(amount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+      setResult("");
+      setAmount("");
+      alert("Enter a valid value greater than 0");
+      return;
+    }
     fetchCurrencyData();
   };
 
