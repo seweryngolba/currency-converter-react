@@ -1,4 +1,3 @@
-import React from "react";
 import "./CurrencyInput.css";
 
 function CurrencyInput({ value, onChange }) {

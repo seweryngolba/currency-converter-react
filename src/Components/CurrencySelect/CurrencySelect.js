@@ -1,4 +1,3 @@
-import React from "react";
 import "./CurrencySelect.css";
 
 function CurrencySelect({ value, onChange }) {
