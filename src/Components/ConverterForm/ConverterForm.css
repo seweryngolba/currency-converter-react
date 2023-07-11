@@ -33,3 +33,9 @@
   align-items: center;
   gap: 20px;
 }
+
+.error {
+  color: red;
+  font-size: 14px;
+  font-weight: bold;
+}

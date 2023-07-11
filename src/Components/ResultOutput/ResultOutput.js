@@ -4,7 +4,7 @@ import "./ResultOutput.css";
 function ResultOutput({ result }) {
   return (
     <div className="total-amount">
-      <output className="counted">{result}</output>
+      <output className="result-text">{result}</output>
     </div>
   );
 }

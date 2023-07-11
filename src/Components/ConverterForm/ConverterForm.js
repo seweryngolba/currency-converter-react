@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import ConvertButton from "../ConvertButton/ConvertButton";
 import CurrencyInput from "../CurrencyInput/CurrencyInput";
 import CurrencySelect from "../CurrencySelect/CurrencySelect";
@@ -11,11 +11,7 @@ function ConverterForm() {
   const [selectedCurrency, setSelectedCurrency] = useState("EUR");
   const [amount, setAmount] = useState("");
   const [result, setResult] = useState("");
-
-  useEffect(() => {
-    fetchCurrencyData();
-    // eslint-disable-next-line
-  }, []);
+  const [error, setError] = useState("");
 
   const fetchCurrencyData = () => {
     fetch(`${apiUrl}${selectedCurrency}/`)
@@ -25,24 +21,26 @@ function ConverterForm() {
           const currencyValue = data.rates[0].mid;
           calculate(currencyValue);
         } else {
-          alert("Failed to read currency converter");
+          handleFetchError();
         }
       })
-      .catch((error) => alert(error));
+      .catch(() => handleFetchError());
   };
 
   const calculate = (currencyValue) => {
     const parsedAmount = parseFloat(amount);
-    if (isNaN(parsedAmount)) {
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
       setResult("");
+      setError("Enter a valid value greater than 0");
       return;
     }
     const calculatedValue = parsedAmount * currencyValue;
-    if (parsedAmount <= 0) {
-      setResult("");
-      return;
-    }
     setResult(calculatedValue.toFixed(2) + " PLN");
+    setError("");
+  };
+
+  const handleFetchError = () => {
+    setError("Failed to read currency converter");
   };
 
   const handleSubmit = (event) => {
@@ -50,15 +48,15 @@ function ConverterForm() {
     const parsedAmount = parseFloat(amount);
     if (isNaN(parsedAmount) || parsedAmount <= 0) {
       setResult("");
-      setAmount("");
-      alert("Enter a valid value greater than 0");
+      setError("Enter a valid value greater than 0");
       return;
     }
+    setError("");
     fetchCurrencyData();
   };
 
   return (
-    <form className="converter" onSubmit={handleSubmit}>
+    <form className="converter" onSubmit={handleSubmit} noValidate>
       <div className="app-name">
         <h1 className="title">Currency Converter</h1>
         <i className="fa-solid fa-money-bill-transfer app-logo"></i>
@@ -70,9 +68,10 @@ function ConverterForm() {
           onChange={setSelectedCurrency}
         />
         <ConvertButton />
-        <div className="equal-sign">=</div>
+        <div className="result-text">=</div>
         <ResultOutput result={result} />
       </div>
+      {error && <div className="error">{error}</div>}
     </form>
   );
 }

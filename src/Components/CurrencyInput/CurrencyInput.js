@@ -4,11 +4,11 @@ import "./CurrencyInput.css";
 function CurrencyInput({ value, onChange }) {
   return (
     <input
-      id="money"
       className="amount-input"
-      type="text"
+      type="number"
       placeholder="100"
-      min="0"
+      min="0.01"
+      step="0.01"
       value={value}
       onChange={(event) => onChange(event.target.value)}
     />
